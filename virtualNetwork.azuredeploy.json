@@ -43,7 +43,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-vnet-deployment",
+      "name": "ra-tanium-sql-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -58,9 +58,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-mgmt-deployment",
+      "name": "ra-tanium-sql-mgmt-deployment",
       "dependsOn": [
-        "ra-ntier-sql-vnet-deployment"
+        "ra-tanium-sql-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -76,9 +76,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-ad-deployment",
+      "name": "ra-tanium-sql-ad-deployment",
       "dependsOn": [
-        "ra-ntier-sql-vnet-deployment"
+        "ra-tanium-sql-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -94,9 +94,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-update-dns",
+      "name": "ra-tanium-sql-update-dns",
       "dependsOn": [
-        "ra-ntier-sql-ad-deployment"
+        "ra-tanium-sql-ad-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -112,9 +112,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-primary-ad-ext",
+      "name": "ra-tanium-sql-primary-ad-ext",
       "dependsOn": [
-        "ra-ntier-sql-update-dns"
+        "ra-tanium-sql-update-dns"
       ],
       "properties": {
         "mode": "Incremental",
@@ -130,9 +130,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-secondary-ad-ext",
+      "name": "ra-tanium-sql-secondary-ad-ext",
       "dependsOn": [
-        "ra-ntier-sql-primary-ad-ext"
+        "ra-tanium-sql-primary-ad-ext"
       ],
       "properties": {
         "mode": "Incremental",
@@ -148,9 +148,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-servers",
+      "name": "ra-tanium-sql-servers",
       "dependsOn": [
-        "ra-ntier-sql-secondary-ad-ext"
+        "ra-tanium-sql-secondary-ad-ext"
       ],
       "properties": {
         "mode": "Incremental",
@@ -166,9 +166,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-fsw",
+      "name": "ra-tanium-sql-fsw",
       "dependsOn": [
-        "ra-ntier-sql-secondary-ad-ext"
+        "ra-tanium-sql-secondary-ad-ext"
       ],
       "properties": {
         "mode": "Incremental",
@@ -184,10 +184,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-ao-iaas-ext",
+      "name": "ra-tanium-sql-ao-iaas-ext",
       "dependsOn": [
-        "ra-ntier-sql-servers",
-        "ra-ntier-sql-fsw"
+        "ra-tanium-sql-servers",
+        "ra-tanium-sql-fsw"
       ],
       "properties": {
         "mode": "Incremental",
@@ -203,9 +203,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-configure-ao-ext",
+      "name": "ra-tanium-sql-configure-ao-ext",
       "dependsOn": [
-        "ra-ntier-sql-ao-iaas-ext"
+        "ra-tanium-sql-ao-iaas-ext"
       ],
       "properties": {
         "mode": "Incremental",
