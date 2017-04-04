@@ -11,7 +11,7 @@
     }
   },
   "variables": {
-    "baseUri": "https://raw.githubusercontent.com/randorfer/azTanium/templates/master",
+    "baseUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/templates",
     "templateParts": "[split(parameters('templateParameterUri'),'/')]",
     "templateDescription": "[split(variables('templateParts')[sub(length(variables('templateParts')), 1)], '.')[0]]"
   },
