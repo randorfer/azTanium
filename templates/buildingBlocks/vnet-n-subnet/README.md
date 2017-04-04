@@ -97,7 +97,7 @@ The following parameter file will create a VNet with subnets suitable for a thre
 
 Note that the building block deployment process will require you store your parameters file in a location with a publicly available URI, which you provide during deployment.
 
-1. Right click the button below and select the option to open the link in a new tab or a new window:<br><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Frandorfer%2FazTanium%2Fmaster%2Ftemplates%2Fscenarios%2Fvnet-n-subnet%2Fazuredeploy.json" target="_blank"><img src = "http://azuredeploy.net/deploybutton.png"/></a>
+1. Right click the button below and select the option to open the link in a new tab or a new window:<br><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Frandorfer%2FazTanium%2Fmaster%2Fscenarios%2Fvnet-n-subnet%2Fazuredeploy.json" target="_blank"><img src = "http://azuredeploy.net/deploybutton.png"/></a>
 2. Wait for the Azure Portal to open.
 3. In the `Basics` section:
   - Select your `Subscription` from the drop-down list.
