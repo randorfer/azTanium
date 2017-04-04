@@ -4,14 +4,14 @@
   "parameters": {
     "templateRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/template-building-blocks/v1.0.0/",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/",
       "metadata": {
         "description": "Root path for templates"
       }
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/virtual-machines/n-tier-windows/parameters/",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/tanium/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -20,10 +20,7 @@
   "variables": {
     "templates": {
       "deployment": {
-        "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
-        "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
-        "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-        "extensions": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json')]"
+        "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]"
       },
       "parameter": {
         "virtualNetwork": "[concat(parameters('parameterRootUri'), 'virtualNetwork.parameters.json')]",
@@ -51,169 +48,6 @@
         },
         "parametersLink": {
           "uri": "[variables('templates').parameter.virtualNetwork]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-mgmt-deployment",
-      "dependsOn": [
-        "ra-tanium-sql-vnet-deployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.virtualMachine]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.managementTier]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-ad-deployment",
-      "dependsOn": [
-        "ra-tanium-sql-vnet-deployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.virtualMachine]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.ad]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-update-dns",
-      "dependsOn": [
-        "ra-tanium-sql-ad-deployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.virtualNetwork]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.vnetDnsUpdate]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-primary-ad-ext",
-      "dependsOn": [
-        "ra-tanium-sql-update-dns"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.extensions]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.adPrimaryExtension]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-secondary-ad-ext",
-      "dependsOn": [
-        "ra-tanium-sql-primary-ad-ext"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.extensions]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.adSecondaryExtension]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-servers",
-      "dependsOn": [
-        "ra-tanium-sql-secondary-ad-ext"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.loadBalancer]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.sqlServers]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-fsw",
-      "dependsOn": [
-        "ra-tanium-sql-secondary-ad-ext"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.virtualMachine]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.sqlFsw]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-ao-iaas-ext",
-      "dependsOn": [
-        "ra-tanium-sql-servers",
-        "ra-tanium-sql-fsw"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.extensions]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.sqlAOIaaSExtensions]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-tanium-sql-configure-ao-ext",
-      "dependsOn": [
-        "ra-tanium-sql-ao-iaas-ext"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.extensions]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.sqlConfigureAOExtensions]",
           "contentVersion": "1.0.0.0"
         }
       }
