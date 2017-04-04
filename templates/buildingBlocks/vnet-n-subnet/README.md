@@ -2,8 +2,8 @@
 
 You can use the vnet-n-subnet building block to deploy an [Azure virtual network (VNet)](https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-overview/). This building block deploys a virtual network with no additional resources. Use this building block to deploy a VNet with no Network Security Groups (NSGs) or User Defined Routes (UDRs). If you want to deploy a VNet with that includes NSGs or UDRs, use the following buildling blocks: 
 
-- [Network Security Groups](https://github.com/mspnp/template-building-blocks/tree/master/templates/buildingBlocks/networkSecurityGroups)
-- [User Defined Routes](https://github.com/mspnp/template-building-blocks/tree/master/templates/buildingBlocks/userDefinedRoutes)
+- [Network Security Groups](https://github.com/randorfer/azTanium/tree/master/templates/buildingBlocks/networkSecurityGroups)
+- [User Defined Routes](https://github.com/randorfer/azTanium/tree/master/templates/buildingBlocks/userDefinedRoutes)
 
 **Note** We chose to have separate building block for NSGs and UDRs so that these can be applied individually, without redefining the entire virtual network. Most deployments use extensions that require access to the Internet during deployment. By separating these blocks, you can deploy the VNet and your VMs, and then tighten security with NSGs and UDRs.
 
