@@ -38,7 +38,7 @@
         "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-n-vm/azuredeploy.json')]"
       },
       "parameter": {
-        "loadBalancer": "[concat(parameters('parameterRootUri'), '/loadBalancer.', parameters('deploymentSize'), '.parameters.json')]"
+        "loadBalancer": "[concat(parameters('parameterRootUri'), '/taniumServer.', parameters('deploymentSize'), '.parameters.json')]"
       }
     }
   },

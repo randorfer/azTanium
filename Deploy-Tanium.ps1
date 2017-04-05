@@ -22,7 +22,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# If changed this needs to be updated in the loadBalancer.parameters.json file to match for the compute deployment...
+# If changed this needs to be updated in the taniumserver.SIZE.parameters.json file to match for the compute deployment...
 $NetworkingResourceGroupName = 'CORPNET'
 $NetworkingTemplateFile = './scenarios/tanium/networking.azuredeploy.json'
 
@@ -47,5 +47,5 @@ New-AzureRmResourceGroup -Name $ResourceGroupName -Location $Location -Force | O
 # Deploy Tanium
 New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
                                    -ResourceGroupName $ResourceGroupName `
-                                   -TemplateFile $TemplateFile `
-                                   -TemplateParameterObject $TemplateParameterObject
+                                   -TemplateFile $ComputeTemplateFile `
+                                   -TemplateParameterObject $ComputeTemplateParameterObject
