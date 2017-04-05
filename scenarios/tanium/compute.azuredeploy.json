@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters/Compute",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters",
       "metadata": {
         "decription": "Root path for parameters"
       }
