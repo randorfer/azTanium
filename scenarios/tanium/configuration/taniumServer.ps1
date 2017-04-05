@@ -100,7 +100,7 @@ Configuration taniumServer
         {
             Name = 'Microsoft SQL Server 2012 Express LocalDB '
             Path = "$($SourceDir)\$($SqlExprWT)" 
-            Arguments = '/q /Action=Install /Hideconsole /Features=SQL,Tools/InstanceName=SQLExpress /SQLSYSADMINACCOUNTS="Builtin\Administrators"'
+            Arguments = '/q /Action=Install /Hideconsole /Features=SQL,Tools /InstanceName=SQLExpress /SQLSYSADMINACCOUNTS="Builtin\Administrators"'
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlExprWT'
