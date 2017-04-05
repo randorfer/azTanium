@@ -4,13 +4,13 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-multi-vm-vnet"
+        "name": "CORPNET"
       }
     },
     "networkSecurityGroupsSettings": {
       "value": [
         {
-          "name": "ra-multi-vm-nsg",
+          "name": "CORPNET-nsg",
           "subnets": [
             "web"
           ],

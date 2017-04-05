@@ -114,8 +114,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-multi-vm-vnet",
-        "resourceGroup": "test"
+        "name": "CORPNET",
+        "resourceGroup": "CORPNET"
       }
     },
     "buildingBlockSettings": {
