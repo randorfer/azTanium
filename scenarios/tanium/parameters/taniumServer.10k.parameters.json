@@ -58,7 +58,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-multi-vm-as"
+          "name": "taniumServer-as"
         }
       }
     },
