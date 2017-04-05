@@ -50,7 +50,7 @@
             "typeHandlerVersion": "2.20",
             "autoUpgradeMinorVersion": true,
             "settingsConfig": {
-              "modulesUrl": "https://raw.githubusercontent.com/randorfer/azTanium/master/configuration/taniumServer.ps1.zip",
+              "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
               "configurationFunction": "taniumServer.ps1\\taniumServer"
             },
             "protectedSettingsConfig": { }
