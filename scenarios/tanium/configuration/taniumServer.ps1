@@ -17,7 +17,14 @@ Configuration taniumServer
     
     $SqlExprWTURI = 'https://download.microsoft.com/download/8/D/D/8DD7BDBA-CEF7-4D8E-8C16-D9F69527F909/ENU/x64/SQLEXPRWT_x64_ENU.exe'
     $SqlExprWT = 'SQLEXPRWT_x64_ENU.exe'
-
+    $InstallSQLExprWTCommandLineArgs = '/q /Action=Install /Hideconsole ' +
+                                       '/Features=SQL,Tools /InstanceName=SQLExpress ' +
+                                       '/SQLSYSADMINACCOUNTS="Builtin\Administrators" ' +
+                                       "/InstallSharedDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
+                                       "/InstallSharedWOWDir=`"$($InstallDir) (x86)\\Microsoft SQL Server\\`" " +
+                                       "/InstanceDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
+                                       "/InstallSQLDataDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
+                                       "/IAcceptSQLServerLicenseTerms"
     $TaniumVersion = '7.0.314.6319'
     $TaniumSetupExeURI = "https://content.tanium.com/files/install/$TaniumVersion/SetupServer.exe"
     $TaniumServerExe = 'SetupServer.exe'
@@ -25,11 +32,7 @@ Configuration taniumServer
     $InstallDir = 'F:\Program Files'
 
     $TaniumServerCommandLineArgs = 
-        '/S /UseHTTPS=true ' +
-        "/ApacheDir=`"$InstallDir\Apache Software Foundation`"" +
-        "/CertPath=`"$InstallDir\Apache Software Foundation\Apache2.2\conf\installedcacert.crt`"" +
-        "/KeyPath=`"$InstallDir\Tanium\Tanium Server\tanium.pub`"" +
-        "/PHPDir=`"$InstallDir\PHP`""
+        "/S /ServerAddress=0.0.0.0 /ServerHostName=$($env:ComputerName) /AdminUser=testuser"
 
     $RetryCount = 20
     $RetryIntervalSec = 30
@@ -64,7 +67,7 @@ Configuration taniumServer
         {
             Name = 'Microsoft SQL Server 2012 Native Client '
             Path = "$($SourceDir)\$($SqlServer2012CLI)" 
-            Arguments = '/qn'
+            Arguments = '/n IACCEPTSQLNCLILICENSETERMS=YES'
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlServer2012CLI'
@@ -82,7 +85,7 @@ Configuration taniumServer
         {
             Name = 'Microsoft SQL Server 2012 Command Line Utilities '
             Path = "$($SourceDir)\$($SqlServer2012CmdUtils)" 
-            Arguments = '/qn'
+            Arguments = '/n'
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlServer2012CmdUtilsURI'
@@ -98,15 +101,15 @@ Configuration taniumServer
         }
         xPackage InstallSqlExprWT
         {
-            Name = 'Microsoft SQL Server 2012 Express LocalDB '
+            Name = 'SQL Server 2012 Database Engine Services'
             Path = "$($SourceDir)\$($SqlExprWT)" 
-            Arguments = '/q /Action=Install /Hideconsole /Features=SQL,Tools /InstanceName=SQLExpress /SQLSYSADMINACCOUNTS="Builtin\Administrators"'
+            Arguments = $InstallSQLExprWTCommandLineArgs
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlExprWT'
                 '[cDiskNoRestart]DataDisk'
             )
-            ProductId = '13D558FE-A863-402C-B115-160007277033'
+            ProductId = '18B2A97C-92C3-4AC7-BE72-F823E0BC895B'
         }
         xRemoteFile DownloadTaniumServerSetup
         {
@@ -129,6 +132,25 @@ Configuration taniumServer
             )
             ProductId = ''
             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Server'
+            InstalledCheckRegValueName = 'DisplayVersion'
+            InstalledCheckRegValueData = $TaniumVersion
+        }
+        xPackage InstallTaniumModuleServer
+        {
+            Name = "Tanium Module Server $TaniumVersion"
+            Path = "c:\\Program Files\\Tanium\\Tanium Server\\SetupModuleServer.exe" 
+            Arguments = "/S" 
+            Ensure = 'Present'
+            DependsOn = @(
+                '[xRemoteFile]DownloadTaniumServerSetup'
+                '[xPackage]InstallSqlServer2012CLI',
+                '[xPackage]InstallSqlServer2012CmdUtils',
+                '[xPackage]InstallSqlExprWT',
+                '[cDiskNoRestart]DataDisk',
+                '[xPackage]InstallTaniumServer'
+            )
+            ProductId = ''
+            InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\\Tanium Module Server'
             InstalledCheckRegValueName = 'DisplayVersion'
             InstalledCheckRegValueData = $TaniumVersion
         }
