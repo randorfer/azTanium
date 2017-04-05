@@ -3,8 +3,6 @@ Configuration taniumServer
     #Import Modules
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
-    Import-DscResource -Module xWindowsUpdate
-    Import-DscResource -Module cWindowscomputer
     Import-DscResource -Module cDisk
     Import-DscResource -Module xDisk
     Import-DscResource -Module xNetworking
