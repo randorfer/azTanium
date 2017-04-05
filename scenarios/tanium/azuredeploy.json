@@ -50,7 +50,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-multi-vm-vnet-deployment",
+      "name": "tanium-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -58,6 +58,41 @@
         },
         "parametersLink": {
           "uri": "[variables('templates').parameter.virtualNetwork]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "tanium-nsg-deployment",
+      "dependsOn": [
+        "tanium-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.networkSecurityGroup]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.networkSecurityGroup]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "tanium-server-deployment",
+      "dependsOn": [
+        "tanium-vnet-deployment",
+        "tanium-nsg-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.loadBalancer]"
         }
       }
     }

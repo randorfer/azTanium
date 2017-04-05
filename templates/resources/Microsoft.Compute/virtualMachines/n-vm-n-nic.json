@@ -31,7 +31,7 @@
     "templateUniqueString": "[uniqueString(concat(string(parameters('deploymentContext')), string(parameters('virtualMachinesSettings')), string(parameters('virtualNetworkSettings')), string(parameters('context'))))]",
     "replicatorTemplate": "[uri(deployment().properties.templateLink.uri, '../../common/replicator.json')]",
     "singleVMTemplate": "[uri(deployment().properties.templateLink.uri, 'single-vm-n-nic.json')]",
-    "vmSettingsDeploymentName": "[concat(parameters('deploymentContext').parentTemplateUniqueString, '-vmSettings-', variables('templateUniqueString'))]",
+    "vmSettingsDeploymentName": "[concat(parameters('deploymentContext').parentTemplateUniqueString, '-vmSettings-', variables('templateUniqueString'))]"
   },
   "resources": [
     {
