@@ -4,9 +4,9 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-multi",
-        "computerNamePrefix": "cn",
-        "size": "Standard_DS1_v2",
+        "namePrefix": "taniumServer",
+        "computerNamePrefix": "taniumServer",
+        "size": "Standard_DS12_v2",
         "osType": "windows",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -43,15 +43,15 @@
         },
         "extensions": [
           {
-            "name": "iis-config-ext",
-            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/v1.0.0/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "name": "taniumServer-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
             "typeHandlerVersion": "2.20",
             "autoUpgradeMinorVersion": true,
             "settingsConfig": {
-              "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/virtual-machines/multi-vm/extensions/windows/iisaspnet.ps1.zip",
-              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+              "modulesUrl": "https://raw.githubusercontent.com/randorfer/azTanium/master/configuration/taniumServer.ps1.zip",
+              "configurationFunction": "taniumServer.ps1\\taniumServer"
             },
             "protectedSettingsConfig": { }
           }
@@ -64,10 +64,10 @@
     },
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-multi-vm-lb",
+        "name": "taniumServer-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-multi-vm-lb-fe-config1",
+            "name": "taniumServer-lb-fe-config1",
             "loadBalancerType": "public",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": { }
@@ -79,8 +79,8 @@
             "frontendPort": 80,
             "backendPort": 80,
             "protocol": "Tcp",
-            "backendPoolName": "ra-multi-vm-lb-bep1",
-            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
+            "backendPoolName": "taniumServer-lb-bep1",
+            "frontendIPConfigurationName": "taniumServer-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
           }
@@ -95,14 +95,14 @@
         ],
         "backendPools": [
           {
-            "name": "ra-multi-vm-lb-bep1",
+            "name": "taniumServer-lb-bep1",
             "nicIndex": 0
           }
         ],
         "inboundNatRules": [
           {
             "namePrefix": "rdp",
-            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
+            "frontendIPConfigurationName": "taniumServer-lb-fe-config1",
             "startingFrontendPort": 50000,
             "backendPort": 3389,
             "natRuleType": "All",
