@@ -5,7 +5,6 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-multi-vm-vnet",
-        "resourceGroup": "ra-multi-vm-rg",
         "addressPrefixes": [
           "10.0.0.0/16"
         ],

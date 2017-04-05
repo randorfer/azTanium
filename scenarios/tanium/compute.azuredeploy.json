@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "templateRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/",
+      "metadata": {
+        "description": "Root path for templates"
+      }
+    },
+    "parameterRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters/Compute",
+      "metadata": {
+        "decription": "Root path for parameters"
+      }
+    },
+    "deploymentSize": {
+      "type": "string",
+      "allowedValues": [
+        "3k",
+        "10k",
+        "35k",
+        "75k",
+        "150k",
+        "400k"
+      ],
+      "defaultValue": "3k",
+      "metadata": {
+        "description": "Relative path decider for the template parameters."
+      }
+    }
+  },
+  "variables": {
+    "templates": {
+      "deployment": {
+        "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-n-vm/azuredeploy.json')]"
+      },
+      "parameter": {
+        "loadBalancer": "[concat(parameters('parameterRootUri'), '/loadBalancer.', parameters('deploymentSize'), '.parameters.json')]"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "tanium-server-deployment",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.loadBalancer]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

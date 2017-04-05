@@ -11,24 +11,9 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters/",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters/Networking",
       "metadata": {
         "decription": "Root path for parameters"
-      }
-    },
-    "deploymentSize": {
-      "type": "string",
-      "allowedValues": [
-        "3k",
-        "10k",
-        "35k",
-        "75k",
-        "150k",
-        "400k"
-      ],
-      "defaultValue": "3k",
-      "metadata": {
-        "description": "Relative path decider for the template parameters."
       }
     }
   },
@@ -36,13 +21,11 @@
     "templates": {
       "deployment": {
         "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
-        "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-n-vm/azuredeploy.json')]",
         "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), parameters('deploymentSize'), '/virtualNetwork.parameters.json')]",
-        "loadBalancer": "[concat(parameters('parameterRootUri'), parameters('deploymentSize'), '/loadBalancer.parameters.json')]",
-        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), parameters('deploymentSize'), '/networkSecurityGroups.parameters.json')]"
+        "virtualNetwork": "[concat(parameters('parameterRootUri'), '/virtualNetwork.parameters.json')]",
+        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), '/networkSecurityGroups.parameters.json')]"
       }
     }
   },
@@ -75,24 +58,6 @@
         },
         "parametersLink": {
           "uri": "[variables('templates').parameter.networkSecurityGroup]"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "tanium-server-deployment",
-      "dependsOn": [
-        "tanium-vnet-deployment",
-        "tanium-nsg-deployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.loadBalancer]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.loadBalancer]"
         }
       }
     }

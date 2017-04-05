@@ -115,7 +115,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-multi-vm-vnet",
-        "resourceGroup": "ra-multi-vm-rg"
+        "resourceGroup": "test"
       }
     },
     "buildingBlockSettings": {

@@ -4,8 +4,7 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-multi-vm-vnet",
-        "resourceGroup": "ra-multi-vm-rg"
+        "name": "ra-multi-vm-vnet"
       }
     },
     "networkSecurityGroupsSettings": {
