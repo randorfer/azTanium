@@ -79,7 +79,5 @@ New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
                                    -ResourceGroupName 'client' `
                                    -TemplateFile $clientTemplateFile `
                                    -computerNamePrefix 'client' `
-                                   -numberOfWin7Clients 10 `
-                                   -numberOfWin10Clients 10 `
                                    -adminUserName $adminCredential.UserName `
                                    -adminPassword $adminCredential.Password

@@ -110,6 +110,9 @@
               "vmCount": 10,
               "vmStartIndex": 1
             }
+          },
+          "storageAccountSKU": {
+            "value": "Standard_LRS"
           }
         }
       }
