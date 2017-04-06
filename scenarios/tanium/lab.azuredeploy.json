@@ -2,13 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "templateRootUri": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/",
-      "metadata": {
-        "description": "Root path for templates"
-      }
-    },
     "deploymentSize": {
       "type": "string",
       "allowedValues": [
@@ -31,40 +24,32 @@
         "description": "Name of the virutal network to deploy compute to"
       }
     },
-    "TSServerSubnetName": {
-      "type": "string",
-      "defaultValue": "web",
-      "metadata": {
-        "description": "The name of the subnet to place the Tanium Server(s) on"
-      }
-    },
     "adminUserName": {
       "type": "string",
       "defaultValue": "testadmin"
     },
     "adminPassword": {
       "type": "securestring"
-    },
-    "computerNamePrefix": {
-      "type": "string",
-      "defaultValue": "taniumServer"
     }
   },
   "variables": {
+    "templateRootUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/",
+    "TSServerSubnetName": "web",
+    "computerNamePrefix": "taniumServer",
     "parameterRootUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters", 
     "templates": {
       "deployment": {
-        "taniumCompute": "[concat(parameters('templateRootUri'), 'scenarios/tanium/templates/TS-S-', parameters('deploymentSize'), '.json')]",
-        "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
-        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]",
-        "clientCompute": "[concat(parameters('templateRootUri'), 'scenarios/clients/azuredeploy.json')]"
+        "taniumCompute": "[concat(variables('templateRootUri'), 'scenarios/tanium/templates/TS-S-', parameters('deploymentSize'), '.json')]",
+        "virtualNetwork": "[concat(variables('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
+        "networkSecurityGroup": "[concat(variables('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]",
+        "clientCompute": "[concat(variables('templateRootUri'), 'scenarios/clients/azuredeploy.json')]"
       },
       "parameter": {
         "virtualNetwork": "[concat(variables('parameterRootUri'), '/virtualNetwork.parameters.json')]",
         "networkSecurityGroup": "[concat(variables('parameterRootUri'), '/networkSecurityGroups.parameters.json')]"
       }
     },
-    "namePrefix": "[parameters('computerNamePrefix')]"
+    "namePrefix": "[variables('computerNamePrefix')]"
   },
   "resources": [
      {
@@ -112,14 +97,14 @@
           "uri": "[variables('templates').deployment.taniumCompute]"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('computerNamePrefix')]" },
+          "namePrefix": { "value": "[variables('computerNamePrefix')]" },
           "computerNamePrefix": { "value": "[variables('namePrefix')]" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
-          "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
+          "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[parameters('templateRootUri')]" }
+          "templateRootUri": { "value": "[variables('templateRootUri')]" }
         }
       }
     },
@@ -140,10 +125,10 @@
           "computerNamePrefix": { "value": "client" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
-          "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
+          "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[parameters('templateRootUri')]" }
+          "templateRootUri": { "value": "[variables('templateRootUri')]" }
         }
       }
     }
