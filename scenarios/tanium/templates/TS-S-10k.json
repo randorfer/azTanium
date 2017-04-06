@@ -45,6 +45,7 @@
   "variables": {
     "vmTemplate": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
     "size": "Standard_DS12_v2",
+    "deploymentName": "Tanium-Server-S-10k",
     "DSCSettings": {
       "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
@@ -54,7 +55,7 @@
   "resources": [
     {
       "apiVersion": "2015-01-01",
-      "name": "tanium-server-deployment",
+      "name": "[variables('deploymentName')]",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
