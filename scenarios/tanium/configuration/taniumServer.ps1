@@ -40,6 +40,10 @@ Configuration taniumServer
     
     Node localhost
     {
+        LocalConfigurationManager
+        {
+            RebootNodeIfNeeded = $true
+        }
         File SourceFolder
         {
             DestinationPath = $($SourceDir)
