@@ -17,13 +17,6 @@
         "description": "Relative path decider for the template parameters."
       }
     },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "CORPNET",
-      "metadata": {
-        "description": "Name of the virutal network to deploy compute to"
-      }
-    },
     "adminUserName": {
       "type": "string",
       "defaultValue": "testadmin"
@@ -36,7 +29,8 @@
     "templateRootUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/",
     "TSServerSubnetName": "web",
     "computerNamePrefix": "taniumServer",
-    "parameterRootUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters", 
+    "parameterRootUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters",
+    "virtualNetworkName": "CORPNET",
     "templates": {
       "deployment": {
         "taniumCompute": "[concat(variables('templateRootUri'), 'scenarios/tanium/templates/TS-S-', parameters('deploymentSize'), '.json')]",
@@ -99,7 +93,7 @@
         "parameters": {
           "namePrefix": { "value": "[variables('computerNamePrefix')]" },
           "computerNamePrefix": { "value": "[variables('namePrefix')]" },
-          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+          "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
@@ -123,7 +117,7 @@
         },
         "parameters": {
           "computerNamePrefix": { "value": "client" },
-          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+          "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
