@@ -19,14 +19,12 @@ Configuration taniumServer
     $SqlExprWT = 'SQLEXPRWT_x64_ENU.exe'
 
     $InstallDir = 'F:\Program Files'
-    $InstallSQLExprWTCommandLineArgs = '/q /Action=Install /Hideconsole ' +
+    $InstallSQLExprWTCommandLineArgs = '/q /Action=Install /IAcceptSQLServerLicenseTerms /Hideconsole ' +
                                        '/Features=SQL,Tools /InstanceName=SQLExpress ' +
                                        '/SQLSYSADMINACCOUNTS="Builtin\Administrators" ' +
                                        "/InstallSharedDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
-                                       "/InstallSharedWOWDir=`"$($InstallDir) (x86)\\Microsoft SQL Server\`" " +
-                                       "/InstanceDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
-                                       "/InstallSQLDataDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
-                                       "/IAcceptSQLServerLicenseTerms"
+                                       "/InstallSharedWOWDir=`"$($InstallDir) (x86)\Microsoft SQL Server\`" " +
+                                       "/InstallSQLDataDir=`"$($InstallDir)\Microsoft SQL Server\\`" "
 
     $LocalAdminUsername = (Get-WmiObject -Class Win32_UserAccount -Filter  "LocalAccount='True'").Name | ? {$_-ne 'Guest'}
     $TaniumVersion = '7.0.314.6319'
