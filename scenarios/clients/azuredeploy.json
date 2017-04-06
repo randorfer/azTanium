@@ -7,6 +7,7 @@
     },
     "virtualNetworkName": {
       "type": "string",
+      "defaultValue": "CORPNET",
       "metadata": {
         "description": "Virtual Network Name"
       }
