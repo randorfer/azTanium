@@ -9,13 +9,6 @@
         "description": "Root path for templates"
       }
     },
-    "parameterRootUri": {
-      "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/parameters",
-      "metadata": {
-        "decription": "Root path for parameters"
-      }
-    },
     "deploymentSize": {
       "type": "string",
       "allowedValues": [
@@ -30,15 +23,42 @@
       "metadata": {
         "description": "Relative path decider for the template parameters."
       }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virutal network to deploy compute to"
+      }
+    },
+    "virtualNetworkResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource group that the Virutal Network is deployed to"
+      }
+    },
+    "TSServerSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the subnet to place the Tanium Server(s) on"
+      }
+    },
+    "adminUserName": {
+      "type": "string"
+    },
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "namePrefix": {
+      "type": "string"
+    },
+    "computerNamePrefix": {
+      "type": "string"
     }
   },
   "variables": {
     "templates": {
       "deployment": {
-        "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-n-vm/azuredeploy.json')]"
-      },
-      "parameter": {
-        "loadBalancer": "[concat(parameters('parameterRootUri'), '/taniumServer.', parameters('deploymentSize'), '.parameters.json')]"
+        "taniumCompute": "[concat(parameters('templateRootUri'), 'templates/scenarios/tanium/templates/TS-S', parameters('deploymentSize'), '.json')]"
       }
     }
   },
@@ -52,10 +72,17 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('templates').deployment.loadBalancer]"
+          "uri": "[variables('templates').deployment.taniumCompute]"
         },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.loadBalancer]"
+        "parameters": {
+          "namePrefix": { "value": "[parameters('namePrefix')]" },
+          "computerNamePrefix": { "value": "[parameters('computerNamePrefix')]" },
+          "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
+          "virtualNetworkResourceGroupName": { "value": "[parameters('virtualNetworkResourceGroupName')]" },
+          "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
+          "adminUserName": { "value": "[parameters('adminUserName')]" },
+          "adminPassword": { "value": "[parameters('adminPassword')]" },
+          "templateRootUri": { "value": "[parameters('templateRootUri')]" }
         }
       }
     }
