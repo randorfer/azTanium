@@ -17,26 +17,28 @@ Configuration taniumServer
     
     $SqlExprWTURI = 'https://download.microsoft.com/download/8/D/D/8DD7BDBA-CEF7-4D8E-8C16-D9F69527F909/ENU/x64/SQLEXPRWT_x64_ENU.exe'
     $SqlExprWT = 'SQLEXPRWT_x64_ENU.exe'
+
+    $InstallDir = 'F:\Program Files'
     $InstallSQLExprWTCommandLineArgs = '/q /Action=Install /Hideconsole ' +
                                        '/Features=SQL,Tools /InstanceName=SQLExpress ' +
                                        '/SQLSYSADMINACCOUNTS="Builtin\Administrators" ' +
-                                       "/InstallSharedDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
-                                       "/InstallSharedWOWDir=`"$($InstallDir) (x86)\\Microsoft SQL Server\\`" " +
-                                       "/InstanceDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
-                                       "/InstallSQLDataDir=`"$($InstallDir)\\Microsoft SQL Server\\`" " +
+                                       "/InstallSharedDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
+                                       "/InstallSharedWOWDir=`"$($InstallDir) (x86)\\Microsoft SQL Server\`" " +
+                                       "/InstanceDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
+                                       "/InstallSQLDataDir=`"$($InstallDir)\Microsoft SQL Server\`" " +
                                        "/IAcceptSQLServerLicenseTerms"
+
+    $LocalAdminUsername = (Get-WmiObject -Class Win32_UserAccount -Filter  "LocalAccount='True'").Name | ? {$_-ne 'Guest'}
     $TaniumVersion = '7.0.314.6319'
     $TaniumSetupExeURI = "https://content.tanium.com/files/install/$TaniumVersion/SetupServer.exe"
     $TaniumServerExe = 'SetupServer.exe'
-    
-    $InstallDir = 'F:\Program Files'
 
     $TaniumServerCommandLineArgs = 
-        "/S /ServerAddress=0.0.0.0 /ServerHostName=$($env:ComputerName) /AdminUser=testuser"
+        "/S /ServerAddress=0.0.0.0 /ServerHostName=$($env:ComputerName) /AdminUser=$($LocalAdminUsername)"
 
     $RetryCount = 20
     $RetryIntervalSec = 30
-
+    
     Node localhost
     {
         File SourceFolder
@@ -67,7 +69,7 @@ Configuration taniumServer
         {
             Name = 'Microsoft SQL Server 2012 Native Client '
             Path = "$($SourceDir)\$($SqlServer2012CLI)" 
-            Arguments = '/n IACCEPTSQLNCLILICENSETERMS=YES'
+            Arguments = 'IACCEPTSQLNCLILICENSETERMS=YES /log D:\source\SMOLOG_X64.TXT'
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlServer2012CLI'
