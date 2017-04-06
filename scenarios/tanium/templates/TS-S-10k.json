@@ -47,7 +47,7 @@
     "size": "Standard_DS12_v2",
     "deploymentName": "Tanium-Server-S-10k",
     "DSCSettings": {
-      "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
+      "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
     }
