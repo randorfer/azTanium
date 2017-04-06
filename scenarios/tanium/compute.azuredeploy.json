@@ -47,7 +47,7 @@
     },
     "adminUserName": {
       "type": "string",
-      "defaultValue": "admin"
+      "defaultValue": "testadmin"
     },
     "adminPassword": {
       "type": "securestring"
