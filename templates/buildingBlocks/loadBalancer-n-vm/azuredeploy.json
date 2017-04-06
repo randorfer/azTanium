@@ -15,7 +15,7 @@
       }
     },
     "virtualMachinesSettings": {
-      "type": "object",
+      "type": "secureObject",
       "metadata": {
         "description": "Settings for virtual machines"
       }
