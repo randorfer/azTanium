@@ -49,6 +49,9 @@ $ComputeTemplateParameterObject = @{
     'adminPassword' = $adminCredential.Password
     'computerNamePrefix' = $TSServerNamePrefix
 }
+
+$clientResourceGroupName = 'clients'
+$clientTemplateFile = './scenarios/clients/azuredeploy.json'
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
@@ -68,3 +71,14 @@ New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
                                    -ResourceGroupName $ResourceGroupName `
                                    -TemplateFile $ComputeTemplateFile `
                                    -TemplateParameterObject $ComputeTemplateParameterObject
+
+# Create Client Resource Group
+New-AzureRmResourceGroup -Name 'client' -Location $Location -Force | Out-Null
+
+# Deploy Clients
+New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
+                                   -ResourceGroupName 'client' `
+                                   -TemplateFile $clientTemplateFile `
+                                   -computerNamePrefix 'client' `
+                                   -numberOfWin7Clients 10 `
+                                   -numberOfWin10Clients 10

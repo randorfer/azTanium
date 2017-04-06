@@ -10,7 +10,7 @@
     "networkSecurityGroupsSettings": {
       "value": [
         {
-          "name": "CORPNET-nsg",
+          "name": "CORPNET-web-nsg",
           "subnets": [
             "web"
           ],
@@ -38,6 +38,27 @@
               "access": "Allow",
               "priority": 110,
               "direction": "Inbound"
+            }
+          ]
+        },
+        {
+          "name": "CORPNET-client-nsg",
+          "subnets": [
+            "client"
+          ],
+          "networkInterfaces": [
+          ],
+          "securityRules": [
+            {
+              "name": "default-allow-rdp",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
             }
           ]
         }

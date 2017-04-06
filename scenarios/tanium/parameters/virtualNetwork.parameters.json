@@ -12,6 +12,10 @@
           {
             "name": "web",
             "addressPrefix": "10.0.1.0/24"
+          },
+          {
+            "name": "client",
+            "addressPrefix": "10.0.128.0/22"
           }
         ],
         "dnsServers": [ ]
