@@ -6,6 +6,7 @@ Configuration taniumServer
     Import-DscResource -Module cDisk
     Import-DscResource -Module xDisk
     Import-DscResource -Module xNetworking
+    Import-DscResource -Module xPendingReboot
 
     $SourceDir = 'D:\Source'
 
@@ -116,6 +117,10 @@ Configuration taniumServer
             Uri = $TaniumSetupExeURI
             DestinationPath = "$($SourceDir)\$($TaniumServerExe)"
             MatchSource = $False
+        }
+        xPendingReboot InstallationReboot
+        {
+            Name = 'BeforeSoftwareInstall'
         }
         xPackage InstallTaniumServer
         {

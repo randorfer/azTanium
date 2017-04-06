@@ -29,10 +29,10 @@
               "protocol": "Tcp"
             },
             {
-              "name": "default-allow-http",
+              "name": "default-allow-https",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "80",
+              "destinationPortRange": "443",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
