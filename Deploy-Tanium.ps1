@@ -75,7 +75,7 @@ New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
 New-AzureRmResourceGroup -Name 'client' -Location $Location -Force | Out-Null
 
 # Deploy Clients
-New-AzureRmResourceGroupDeployment -Name "TaniumDeploy" `
+New-AzureRmResourceGroupDeployment -Name "clientDeploy" `
                                    -ResourceGroupName 'client' `
                                    -TemplateFile $clientTemplateFile `
                                    -computerNamePrefix 'client' `
