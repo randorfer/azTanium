@@ -39,7 +39,6 @@ $ComputeTemplateParameterObject = @{
     'TSServerSubnetName' = 'web'
     'adminUserName' = $adminCredential.UserName
     'adminPassword' = $adminCredential.Password
-    'namePrefix' = $TSServerNamePrefix
     'computerNamePrefix' = $TSServerNamePrefix
 }
 # Login to Azure and select your subscription

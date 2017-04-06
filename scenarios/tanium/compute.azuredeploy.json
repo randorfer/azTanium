@@ -26,33 +26,35 @@
     },
     "virtualNetworkName": {
       "type": "string",
+      "defaultValue": "CORPNET",
       "metadata": {
         "description": "Name of the virutal network to deploy compute to"
       }
     },
     "virtualNetworkResourceGroupName": {
       "type": "string",
+      "defaultValue": "CORPNET",
       "metadata": {
         "description": "Resource group that the Virutal Network is deployed to"
       }
     },
     "TSServerSubnetName": {
       "type": "string",
+      "defaultValue": "web",
       "metadata": {
         "description": "The name of the subnet to place the Tanium Server(s) on"
       }
     },
     "adminUserName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "admin"
     },
     "adminPassword": {
       "type": "securestring"
     },
-    "namePrefix": {
-      "type": "string"
-    },
     "computerNamePrefix": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "taniumServer"
     }
   },
   "variables": {
@@ -60,7 +62,8 @@
       "deployment": {
         "taniumCompute": "[concat(parameters('templateRootUri'), 'scenarios/tanium/templates/TS-S-', parameters('deploymentSize'), '.json')]"
       }
-    }
+    },
+    "namePrefix": "[parameters('computerNamePrefix')]"
   },
   "resources": [
     {
@@ -75,8 +78,8 @@
           "uri": "[variables('templates').deployment.taniumCompute]"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('namePrefix')]" },
-          "computerNamePrefix": { "value": "[parameters('computerNamePrefix')]" },
+          "namePrefix": { "value": "[parameters('computerNamePrefix')]" },
+          "computerNamePrefix": { "value": "[variables('namePrefix')]" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[parameters('virtualNetworkResourceGroupName')]" },
           "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
