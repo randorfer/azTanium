@@ -58,7 +58,7 @@
   "variables": {
     "templates": {
       "deployment": {
-        "taniumCompute": "[concat(parameters('templateRootUri'), 'scenarios/tanium/templates/TS-S', parameters('deploymentSize'), '.json')]"
+        "taniumCompute": "[concat(parameters('templateRootUri'), 'scenarios/tanium/templates/TS-S-', parameters('deploymentSize'), '.json')]"
       }
     }
   },
