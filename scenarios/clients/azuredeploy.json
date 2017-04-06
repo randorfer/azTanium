@@ -41,14 +41,6 @@
     "templateRootUri": {
         "type": "string",
         "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/"
-    },
-    "numberOfWin7Clients": {
-        "type": "int",
-        "defaultValue": 1
-    },
-    "numberOfWin10Clients": {
-        "type": "int",
-        "defaultValue": 1
     }
   },
   "variables": {
@@ -94,6 +86,7 @@
                 "sku": "Win7-SP1-Ent-N",
                 "version": "latest"
               },
+              "dataDisks": {},
               "osDisk": {
                 "caching": "ReadWrite"
               },
@@ -114,7 +107,7 @@
           "buildingBlockSettings": {
             "value": {
               "storageAccountsCount": 1,
-              "vmCount": "[parameters('numberOfWin7Clients')]",
+              "vmCount": 10,
               "vmStartIndex": 1
             }
           }
@@ -143,7 +136,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "false",
+                  "isPublic": "true",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
@@ -158,6 +151,14 @@
                 "offer": "Windows",
                 "sku": "Windows-10-N-x64",
                 "version": "latest"
+              },
+              "dataDisks": {
+                "count": 1,
+                "properties": {
+                  "diskSizeGB": 128,
+                  "caching": "None",
+                  "createOption": "Empty"
+                }
               },
               "osDisk": {
                 "caching": "ReadWrite"
@@ -179,7 +180,7 @@
           "buildingBlockSettings": {
             "value": {
               "storageAccountsCount": 1,
-              "vmCount": "[parameters('numberOfWin10Clients')]",
+              "vmCount": 10,
               "vmStartIndex": 1
             }
           }
