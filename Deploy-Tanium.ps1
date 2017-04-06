@@ -17,7 +17,12 @@ param(
       "150k",
       "400k"
   )]
-  $DeploymentSize
+  $DeploymentSize,
+  [Parameter(Mandatory=$True)]
+  [pscredential]
+  $adminCredential,
+  [Parameter(Mandatory=$True)]
+  $TSServerNamePrefix
 )
 
 $ErrorActionPreference = "Stop"
@@ -29,6 +34,13 @@ $NetworkingTemplateFile = './scenarios/tanium/networking.azuredeploy.json'
 $ComputeTemplateFile = './scenarios/tanium/compute.azuredeploy.json'
 $ComputeTemplateParameterObject = @{
     'deploymentSize' = $DeploymentSize
+    'virtualNetworkName' = 'CORPNET'
+    'virtualNetworkResourceGroupName' = $NetworkingResourceGroupName
+    'TSServerSubnetName' = 'web'
+    'adminUserName' = $adminCredential.UserName
+    'adminPassword' = $adminCredential.Password
+    'namePrefix' = $TSServerNamePrefix
+    'computerNamePrefix' = $TSServerNamePrefix
 }
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
