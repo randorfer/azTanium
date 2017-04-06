@@ -31,13 +31,6 @@
         "description": "Name of the virutal network to deploy compute to"
       }
     },
-    "virtualNetworkResourceGroupName": {
-      "type": "string",
-      "defaultValue": "CORPNET",
-      "metadata": {
-        "description": "Resource group that the Virutal Network is deployed to"
-      }
-    },
     "TSServerSubnetName": {
       "type": "string",
       "defaultValue": "web",
@@ -122,7 +115,7 @@
           "namePrefix": { "value": "[parameters('computerNamePrefix')]" },
           "computerNamePrefix": { "value": "[variables('namePrefix')]" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
-          "virtualNetworkResourceGroupName": { "value": "[parameters('virtualNetworkResourceGroupName')]" },
+          "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
@@ -146,7 +139,7 @@
         "parameters": {
           "computerNamePrefix": { "value": "client" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
-          "virtualNetworkResourceGroupName": { "value": "[parameters('virtualNetworkResourceGroupName')]" },
+          "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
