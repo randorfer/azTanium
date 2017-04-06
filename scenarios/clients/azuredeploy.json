@@ -123,7 +123,7 @@
     },
     {
       "apiVersion": "2015-01-01",
-      "name": "Win7-Clients",
+      "name": "Win10-Clients",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
