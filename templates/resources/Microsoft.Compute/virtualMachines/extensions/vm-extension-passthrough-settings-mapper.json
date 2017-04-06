@@ -4,7 +4,7 @@
   "parameters": {
     "deploymentContext": { "type": "object" },
     "source": { "type": "object" },
-    "context": { "type": "object" }
+    "context": { "type": "secureObject" }
   },
   "variables": {
     "instance": {

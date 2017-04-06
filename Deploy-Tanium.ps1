@@ -1,6 +1,14 @@
-#
-# Deploy_Tanium.ps1
-#
+<#
+Deploy_Tanium.ps1
+
+$SubscriptionId = 'c128313c-0b3a-45b9-8960-97b765547eeb'
+$Location = 'eastus2'
+$ResourceGroupName = 'ts'
+$DeploymentSize = '10k'
+$TSServerNamePrefix = 'taniumServer'
+$adminCredential = (get-Credential)
+
+#>
 param(
   [Parameter(Mandatory=$True)]
   $SubscriptionId,
