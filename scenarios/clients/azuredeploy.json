@@ -86,6 +86,14 @@
                 "sku": "Win7-SP1-Ent-N",
                 "version": "latest"
               },
+              "dataDisks": {
+                "count": 1,
+                "properties": {
+                  "diskSizeGB": 128,
+                  "caching": "None",
+                  "createOption": "Empty"
+                }
+              },
               "osDisk": {
                 "caching": "ReadWrite"
               },
@@ -153,6 +161,14 @@
                 "offer": "Windows",
                 "sku": "Windows-10-N-x64",
                 "version": "latest"
+              },
+              "dataDisks": {
+                "count": 1,
+                "properties": {
+                  "diskSizeGB": 128,
+                  "caching": "None",
+                  "createOption": "Empty"
+                }
               },
               "osDisk": {
                 "caching": "ReadWrite"
