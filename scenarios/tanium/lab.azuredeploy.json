@@ -46,8 +46,8 @@
         "clientCompute": {
             "win7ClientCount": 3,
             "win10ClientCount": 3,
-            "ubuntu1604ClientCount": 3,
-            "centos73ClientCount": 3 
+            "ubuntu1604ClientCount": 1,
+            "centos73ClientCount": 1 
         }
       }
     },
