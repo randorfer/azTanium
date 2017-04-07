@@ -41,6 +41,14 @@
     "templateRootUri": {
         "type": "string",
         "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/"
+    },
+    "win7ClientCount": {
+        "type": "int",
+        "defaultValue": "50"
+    },
+    "win10ClientCount": {
+        "type": "int",
+        "defaultValue": "50"
     }
   },
   "variables": {
@@ -114,7 +122,7 @@
           "buildingBlockSettings": {
             "value": {
               "storageAccountsCount": 1,
-              "vmCount": 1,
+              "vmCount": "[parameters('win7ClientCount')]",
               "vmStartIndex": 1
             }
           },
@@ -190,7 +198,7 @@
           "buildingBlockSettings": {
             "value": {
               "storageAccountsCount": 1,
-              "vmCount": 2,
+              "vmCount": "[parameters('win10ClientCount')]",
               "vmStartIndex": 1
             }
           },
