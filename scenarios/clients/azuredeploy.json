@@ -101,7 +101,7 @@
               ],
               "availabilitySet": {
                 "useExistingAvailabilitySet": "No",
-                "name": ""
+                "name": "win7"
               }
             }
           },
@@ -177,7 +177,7 @@
               ],
               "availabilitySet": {
                 "useExistingAvailabilitySet": "No",
-                "name": ""
+                "name": "win10"
               }
             }
           },
