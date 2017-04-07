@@ -6,11 +6,7 @@
       "type": "string",
       "allowedValues": [
         "3k",
-        "10k",
-        "35k",
-        "75k",
-        "150k",
-        "400k"
+        "10k"
       ],
       "defaultValue": "3k",
       "metadata": {
@@ -23,6 +19,12 @@
     },
     "adminPassword": {
       "type": "securestring"
+    },
+    "taniumLicenseFileURI": {
+      "type": "string",
+      "metadata": {
+        "description": "URI to a tanium license file."
+      }
     }
   },
   "variables": {
@@ -42,8 +44,10 @@
         "virtualNetwork": "[concat(variables('parameterRootUri'), '/virtualNetwork.parameters.json')]",
         "networkSecurityGroup": "[concat(variables('parameterRootUri'), '/networkSecurityGroups.parameters.json')]",
         "clientCompute": {
-            "win7ClientCount": 50,
-            "win10ClientCount": 50
+            "win7ClientCount": 3,
+            "win10ClientCount": 3,
+            "ubuntu1604ClientCount": 3,
+            "centos73ClientCount": 3 
         }
       }
     },
@@ -102,7 +106,8 @@
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[variables('templateRootUri')]" }
+          "templateRootUri": { "value": "[variables('templateRootUri')]" },
+          "taniumLicenseFileURI": { "value": "[parameters('taniumLicenseFileURI')]" }
         }
       }
     },
@@ -128,7 +133,9 @@
           "adminPassword": { "value": "[parameters('adminPassword')]" },
           "templateRootUri": { "value": "[variables('templateRootUri')]" },
           "win7ClientCount": { "value": "[variables('templates').parameter.clientCompute.win7ClientCount]"},
-          "win10ClientCount": { "value": "[variables('templates').parameter.clientCompute.win10ClientCount]"}
+          "win10ClientCount": { "value": "[variables('templates').parameter.clientCompute.win10ClientCount]"},
+          "ubuntu1604ClientCount": { "value": "[variables('templates').parameter.clientCompute.ubuntu1604ClientCount]"},
+          "centos73ClientCount": { "value": "[variables('templates').parameter.clientCompute.centos73ClientCount]"},
         }
       }
     }

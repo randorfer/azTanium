@@ -40,16 +40,24 @@
     },
     "templateRootUri": {
         "type": "string"
+    },
+    "taniumLicenseFileURI": {
+        "type": "securestring"
     }
   },
   "variables": {
     "vmTemplate": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-    "size": "Standard_DS4_v2",
+    "size": "Standard_DS3_v2",
     "deploymentName": "Tanium-Server-S-3k",
+    "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
     "DSCSettings": {
-      "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
+    },
+    "LicenseInstallSettings": {
+      "scriptName": "Set-TaniumLicenseFile.ps1",
+      "fileUris": "[concat(parameters('templateRootUri'), 'scenarios/tanium/scripts/', variables('LicenseInstallSettings').scriptName)]",
+      "comandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('LicenseInstallSettings').scriptName, '\"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
     }
   },
   "resources": [
@@ -105,7 +113,7 @@
               "extensions": [
                 {
                   "name": "taniumServer-config-ext",
-                  "settingsConfigMapperUri": "[variables('DSCSettings').settingsConfigMapperUri]",
+                  "settingsConfigMapperUri": "[variables('settingsConfigMapperUri')]",
                   "publisher": "Microsoft.Powershell",
                   "type": "DSC",
                   "typeHandlerVersion": "2.20",
@@ -115,6 +123,20 @@
                     "configurationFunction": "[variables('DSCSettings').configurationFunction]"
                   },
                   "protectedSettingsConfig": { }
+                },
+                {
+                  "name": "taniumServer-license-install-ext",
+                  "settingsConfigMapperUri": "[variables('settingsConfigMapperUri')]",
+                  "publisher": "Microsoft.Compute",
+                  "type": "CustomScriptExtension",
+                  "typeHandlerVersion": "1.8",
+                  "autoUpgradeMinorVersion": true,
+                  "settingsConfig": {
+                    "modulesUrl": "[variables('LicenseInstallSettings').fileUris]"
+                  },
+                  "protectedSettingsConfig": {
+                    "commandToExecute": "[variables('LicenseInstallSettings').comandToExecute]" 
+                   }
                 }
               ],
               "availabilitySet": {

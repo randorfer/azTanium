@@ -44,11 +44,19 @@
     },
     "win7ClientCount": {
         "type": "int",
-        "defaultValue": 50
+        "defaultValue": 3 
     },
     "win10ClientCount": {
         "type": "int",
-        "defaultValue": 50
+        "defaultValue": 3 
+    },
+    "ubuntu1604ClientCount": {
+        "type": "int",
+        "defaultValue": 3 
+    },
+     "centos73ClientCount": {
+        "type": "int",
+        "defaultValue": 3 
     }
   },
   "variables": {
@@ -94,14 +102,7 @@
                 "sku": "Win7-SP1-Ent-N",
                 "version": "latest"
               },
-              "dataDisks": {
-                "count": 1,
-                "properties": {
-                  "diskSizeGB": 128,
-                  "caching": "None",
-                  "createOption": "Empty"
-                }
-              },
+              "dataDisks": { },
               "osDisk": {
                 "caching": "ReadWrite"
               },
@@ -170,14 +171,7 @@
                 "sku": "Windows-10-N-x64",
                 "version": "latest"
               },
-              "dataDisks": {
-                "count": 1,
-                "properties": {
-                  "diskSizeGB": 128,
-                  "caching": "None",
-                  "createOption": "Empty"
-                }
-              },
+              "dataDisks": { },
               "osDisk": {
                 "caching": "ReadWrite"
               },
@@ -199,6 +193,144 @@
             "value": {
               "storageAccountsCount": 1,
               "vmCount": "[parameters('win10ClientCount')]", 
+              "vmStartIndex": 1
+            }
+          },
+          "storageAccountSKU": {
+            "value": "Standard_LRS"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "Ubuntu-1604-Clients",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vmTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachinesSettings": {
+            "value": {
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'ubuntu1604')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ubuntu1604')]",
+              "size": "[variables('size')]",
+              "osType": "linux",
+              "adminUsername": "[parameters('adminUserName')]",
+              "adminPassword": "[parameters('adminPassword')]",
+              "osAuthenticationType": "password",
+              "nics": [
+                {
+                  "isPublic": "false",
+                  "subnetName": "[parameters('subnetName')]",
+                  "publicIPAllocationMethod": "Dynamic",
+                  "privateIPAllocationMethod": "Dynamic",
+                  "enableIPForwarding": false,
+                  "dnsServers": [ ],
+                  "isPrimary": "true",
+                  "domainNameLabelPrefix": ""
+                }
+              ],
+              "imageReference": {
+                "publisher": "Canonical",
+                "offer": "UbuntuServer",
+                "sku": "16.04-LTS",
+                "version": "latest"
+              },
+              "dataDisks": { },
+              "osDisk": {
+                "caching": "ReadWrite"
+              },
+              "extensions": [
+              ],
+              "availabilitySet": {
+                "useExistingAvailabilitySet": "No",
+                "name": "ubuntu1604"
+              }
+            }
+          },
+          "virtualNetworkSettings": {
+            "value": {
+              "name": "[parameters('virtualNetworkName')]",
+              "resourceGroup": "[parameters('virtualNetworkResourceGroupName')]"
+            }
+          },
+          "buildingBlockSettings": {
+            "value": {
+              "storageAccountsCount": 1,
+              "vmCount": "[parameters('ubuntu1604ClientCount')]", 
+              "vmStartIndex": 1
+            }
+          },
+          "storageAccountSKU": {
+            "value": "Standard_LRS"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "Centos-73-Clients",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vmTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachinesSettings": {
+            "value": {
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'centos73')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-centos73')]",
+              "size": "[variables('size')]",
+              "osType": "linux",
+              "adminUsername": "[parameters('adminUserName')]",
+              "adminPassword": "[parameters('adminPassword')]",
+              "osAuthenticationType": "password",
+              "nics": [
+                {
+                  "isPublic": "false",
+                  "subnetName": "[parameters('subnetName')]",
+                  "publicIPAllocationMethod": "Dynamic",
+                  "privateIPAllocationMethod": "Dynamic",
+                  "enableIPForwarding": false,
+                  "dnsServers": [ ],
+                  "isPrimary": "true",
+                  "domainNameLabelPrefix": ""
+                }
+              ],
+              "imageReference": {
+                "publisher": "OpenLogic",
+                "offer": "CentOS",
+                "sku": "7.3",
+                "version": "latest"
+              },
+              "dataDisks": { },
+              "osDisk": {
+                "caching": "ReadWrite"
+              },
+              "extensions": [
+              ],
+              "availabilitySet": {
+                "useExistingAvailabilitySet": "No",
+                "name": "centos73"
+              }
+            }
+          },
+          "virtualNetworkSettings": {
+            "value": {
+              "name": "[parameters('virtualNetworkName')]",
+              "resourceGroup": "[parameters('virtualNetworkResourceGroupName')]"
+            }
+          },
+          "buildingBlockSettings": {
+            "value": {
+              "storageAccountsCount": 1,
+              "vmCount": "[parameters('centOS73ClientCount')]", 
               "vmStartIndex": 1
             }
           },
