@@ -41,14 +41,6 @@
     "templateRootUri": {
         "type": "string",
         "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/"
-    },
-    "win7ClientCount": {
-        "type": "int",
-        "defaultValue": 50
-    },
-    "win10ClientCount": {
-        "type": "int",
-        "defaultValue": 50
     }
   },
   "variables": {
