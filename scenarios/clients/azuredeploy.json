@@ -78,7 +78,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "true",
+                  "isPublic": "false",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
@@ -154,7 +154,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "true",
+                  "isPublic": "false",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
