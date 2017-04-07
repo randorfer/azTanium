@@ -119,7 +119,7 @@
               ],
               "availabilitySet": {
                 "useExistingAvailabilitySet": "No",
-                "name": ""
+                "name": "taniumServer"
               }
             }
           },
