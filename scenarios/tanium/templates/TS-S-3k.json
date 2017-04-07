@@ -57,7 +57,7 @@
     "scriptName": "Set-TaniumLicenseFile.ps1",
     "LicenseInstallSettings": {
       "fileUris": "[concat(parameters('templateRootUri'), 'scenarios/tanium/scripts/', variables('scriptName'))]",
-      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptName'), '\"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
+      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptName'), '\" ', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
     }
   },
   "resources": [
