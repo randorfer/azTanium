@@ -56,7 +56,7 @@
     },
     "scriptName": "Set-TaniumLicenseFile.ps1",
     "LicenseInstallSettings": {
-      "fileUris": "[concat(parameters('templateRootUri'), 'scenarios/tanium/scripts/', variables('scriptName'))]",
+      "fileUris": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumLicenseFile.ps1",
       "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./', variables('scriptName'), ' \"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
     }
   },
