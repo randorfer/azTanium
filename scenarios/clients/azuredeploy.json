@@ -44,11 +44,11 @@
     },
     "win7ClientCount": {
         "type": "int",
-        "defaultValue": "50"
+        "defaultValue": 50
     },
     "win10ClientCount": {
         "type": "int",
-        "defaultValue": "50"
+        "defaultValue": 50
     }
   },
   "variables": {
