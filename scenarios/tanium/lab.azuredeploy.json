@@ -128,14 +128,14 @@
           "computerNamePrefix": { "value": "client" },
           "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
-          "subnetName": { "value": "[variables('TSServerSubnetName')]" },
+          "subnetName": { "value": "client" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
           "templateRootUri": { "value": "[variables('templateRootUri')]" },
           "win7ClientCount": { "value": "[variables('templates').parameter.clientCompute.win7ClientCount]"},
           "win10ClientCount": { "value": "[variables('templates').parameter.clientCompute.win10ClientCount]"},
           "ubuntu1604ClientCount": { "value": "[variables('templates').parameter.clientCompute.ubuntu1604ClientCount]"},
-          "centos73ClientCount": { "value": "[variables('templates').parameter.clientCompute.centos73ClientCount]"},
+          "centos73ClientCount": { "value": "[variables('templates').parameter.clientCompute.centos73ClientCount]"}
         }
       }
     }
