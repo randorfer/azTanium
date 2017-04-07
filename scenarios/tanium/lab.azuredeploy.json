@@ -40,7 +40,11 @@
       },
       "parameter": {
         "virtualNetwork": "[concat(variables('parameterRootUri'), '/virtualNetwork.parameters.json')]",
-        "networkSecurityGroup": "[concat(variables('parameterRootUri'), '/networkSecurityGroups.parameters.json')]"
+        "networkSecurityGroup": "[concat(variables('parameterRootUri'), '/networkSecurityGroups.parameters.json')]",
+        "clientCompute": {
+            "win7ClientCount": 50,
+            "win10ClientCount": 50
+        }
       }
     },
     "namePrefix": "[variables('computerNamePrefix')]"
@@ -122,7 +126,9 @@
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[variables('templateRootUri')]" }
+          "templateRootUri": { "value": "[variables('templateRootUri')]" },
+          "win7ClientCount": { "value": "[variables('templates').parameter.clientCompute.win7ClientCount]"},
+          "win10ClientCount": { "value": "[variables('templates').parameter.clientCompute.win10ClientCount]"}
         }
       }
     }
