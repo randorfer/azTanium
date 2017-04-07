@@ -86,7 +86,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "false",
+                  "isPublic": "true",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
@@ -162,7 +162,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "false",
+                  "isPublic": "true",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
@@ -238,7 +238,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "false",
+                  "isPublic": "true",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
@@ -314,7 +314,7 @@
               "osAuthenticationType": "password",
               "nics": [
                 {
-                  "isPublic": "false",
+                  "isPublic": "true",
                   "subnetName": "[parameters('subnetName')]",
                   "publicIPAllocationMethod": "Dynamic",
                   "privateIPAllocationMethod": "Dynamic",
