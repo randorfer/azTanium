@@ -54,10 +54,9 @@
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
     },
-    "scriptName": "Set-TaniumLicenseFile.ps1",
     "LicenseInstallSettings": {
       "fileUris": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumLicenseFile.ps1",
-      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./', variables('scriptName'), ' \"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
+      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./Set-TaniumLicenseFile.ps1 \"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
     }
   },
   "resources": [
