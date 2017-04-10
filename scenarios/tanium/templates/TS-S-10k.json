@@ -37,7 +37,6 @@
     }
   },
   "variables": {
-    "apiVersion": "2017-03-30",
     "vnetID": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "DSCSettings": {
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
@@ -56,7 +55,7 @@
   },
   "resources": [
     {
-        "apiVersion": "[variables('apiVersion')]",
+        "apiVersion": "2017-04-01",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('vmSettings').Networking.publicIPAddressName]",
         "location": "[resourceGroup().location]",
@@ -65,7 +64,7 @@
         }
     },
     {
-        "apiVersion": "[variables('apiVersion')]",
+        "apiVersion": "2017-03-30",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[variables('vmSettings').Networking.nicName]",
         "location": "[resourceGroup().location]",
@@ -90,7 +89,7 @@
         }
     },
     {
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('VMSettings').availabilitySetName]",
       "location": "[resourceGroup().location]",
@@ -100,7 +99,7 @@
       }
     },
     {
-        "apiVersion": "[variables('apiVersion')]",
+        "apiVersion": "2017-03-30",
         "type": "Microsoft.Compute/virtualMachines",
         "name": "[variables('VMSettings').serverName]",
         "location": "[resourceGroup().location]",
@@ -151,7 +150,7 @@
             {
                 "type": "extensions",
                 "name": "taniumServer-config-ext",
-                "apiVersion": "[variables('apiVersion')]",
+                "apiVersion": "2017-03-30",
                 "location": "[resourceGroup().location]",
                 "dependsOn": [
                     "[variables('vmSettings').serverName]"
