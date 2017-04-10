@@ -49,8 +49,8 @@
         "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
       },
       "serverName": "[concat(parameters('computerNamePrefix'), '-1')]",
-        "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
-        "size": "Standard_DS3_v2"
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
+      "size": "Standard_DS3_v2"
     }
   },
   "resources": [
