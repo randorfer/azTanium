@@ -2,9 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "namePrefix": {
-      "type": "string"
-    },
     "computerNamePrefix": {
       "type": "string"
     },
@@ -37,128 +34,132 @@
       "metadata": {
         "description": "VM Admin Password"
       }
-    },
-    "templateRootUri": {
-        "type": "string"
-    },
-    "taniumLicenseFileURI": {
-        "type": "securestring"
     }
   },
   "variables": {
-    "vmTemplate": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-    "size": "Standard_DS3_v2",
-    "deploymentName": "Tanium-Server-S-3k",
-    "settingsConfigMapperUri": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json')]",
+    "apiVersion": "2016-09-01",
+    "vnetID": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "DSCSettings": {
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
     },
-    "LicenseInstallSettings": {
-      "fileUris": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumLicenseFile.ps1",
-      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./Set-TaniumLicenseFile.ps1 \"', parameters('taniumLicenseFileURI'), '\" \"C:\\Program Files\\Tanium\\Tanium Server\\tanium.license\"')]"
+    "VMSettings": {
+      "Networking": {
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+        "publicIPAddressName": "[concat(parameters('computerNamePrefix'), '-pip')]",
+        "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
+      },
+      "serverName": "[concat(parameters('computerNamePrefix'), '-1')]",
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
+      "size": "Standard_DS3_v2"
     }
   },
   "resources": [
     {
-      "apiVersion": "2015-01-01",
-      "name": "[variables('deploymentName')]",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('vmTemplate')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "virtualMachinesSettings": {
-            "value": {
-              "namePrefix": "[parameters('namePrefix')]",
-              "computerNamePrefix": "[parameters('computerNamePrefix')]",
-              "size": "[variables('size')]",
-              "osType": "windows",
-              "adminUsername": "[parameters('adminUserName')]",
-              "adminPassword": "[parameters('adminPassword')]",
-              "osAuthenticationType": "password",
-              "nics": [
-                {
-                  "isPublic": "true",
-                  "subnetName": "[parameters('subnetName')]",
-                  "publicIPAllocationMethod": "Dynamic",
-                  "privateIPAllocationMethod": "Dynamic",
-                  "enableIPForwarding": false,
-                  "dnsServers": [ ],
-                  "isPrimary": "true",
-                  "domainNameLabelPrefix": ""
-                }
-              ],
-              "imageReference": {
-                "publisher": "MicrosoftWindowsServer",
-                "offer": "WindowsServer",
-                "sku": "2012-R2-Datacenter",
-                "version": "latest"
-              },
-              "dataDisks": {
-                "count": 1,
-                "properties": {
-                  "diskSizeGB": 128,
-                  "caching": "None",
-                  "createOption": "Empty"
-                }
-              },
-              "osDisk": {
-                "caching": "ReadWrite"
-              },
-              "extensions": [
-                {
-                  "name": "taniumServer-config-ext",
-                  "settingsConfigMapperUri": "[variables('settingsConfigMapperUri')]",
-                  "publisher": "Microsoft.Powershell",
-                  "type": "DSC",
-                  "typeHandlerVersion": "2.20",
-                  "autoUpgradeMinorVersion": true,
-                  "settingsConfig": {
-                    "modulesUrl": "[variables('DSCSettings').modulesUrl]",
-                    "configurationFunction": "[variables('DSCSettings').configurationFunction]"
-                  },
-                  "protectedSettingsConfig": { }
-                },
-                {
-                  "name": "taniumServer-license-install-ext",
-                  "settingsConfigMapperUri": "[variables('settingsConfigMapperUri')]",
-                  "publisher": "Microsoft.Compute",
-                  "type": "CustomScriptExtension",
-                  "typeHandlerVersion": "1.8",
-                  "autoUpgradeMinorVersion": true,
-                  "settingsConfig": {
-                    "modulesUrl": "[variables('LicenseInstallSettings').fileUris]"
-                  },
-                  "protectedSettingsConfig": {
-                    "commandToExecute": "[variables('LicenseInstallSettings').commandToExecute]" 
-                   }
-                }
-              ],
-              "availabilitySet": {
-                "useExistingAvailabilitySet": "No",
-                "name": "taniumServer"
-              }
-            }
-          },
-          "virtualNetworkSettings": {
-            "value": {
-              "name": "[parameters('virtualNetworkName')]",
-              "resourceGroup": "[parameters('virtualNetworkResourceGroupName')]"
-            }
-          },
-          "buildingBlockSettings": {
-            "value": {
-              "storageAccountsCount": 1,
-              "vmCount": 1,
-              "vmStartIndex": 1
-            }
-          }
+        "apiVersion": "[variables('apiVersion')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('vmSettings').Networking.publicIPAddressName]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "publicIPAllocationMethod": "Dynamic"
         }
+    },
+    {
+        "apiVersion": "[variables('apiVersion')]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('vmSettings').Networking.nicName]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[variables('vmSettings').Networking.publicIPAddressName]"
+        ],
+        "properties": {
+            "ipConfigurations": [
+                {
+                    "name": "ipconfig1",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vmSettings').Networking.publicIPAddressName)]"
+                        },
+                        "subnet": {
+                            "id": "[variables('vmSettings').Networking.subnetRef]"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('VMSettings').availabilitySetName]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "platformFaultDomainCount": 3,
+        "platformUpdateDomainCount": 20
       }
+    },
+    {
+        "apiVersion": "2016-04-30-preview",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[parameters('computerNamePrefix')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[variables('vmSettings').Networking.nicName]",
+            "[variables('vmSettings').availabilitySetName]"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "[variables('VMSettings').size]" 
+            },
+            "osProfile": {
+                "computerName": "[variables('vmSettings').serverName]",
+                "adminUsername": "[parameters('adminUsername')]",
+                "adminPassword": "[parameters('adminPassword')]"
+            },
+            "storageProfile": {
+                "imageReference": {
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2016-Datacenter",
+                    "version": "latest"
+                },
+                "osDisk": {
+                    "createOption": "FromImage"
+                }
+            },
+            "networkProfile": {
+                "networkInterfaces": [
+                    {
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmSettings').Networking.nicName)]"
+                    }
+                ]
+            },
+            "availabilitySet": {
+              "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('VMSettings').availabilitySetName)]"
+            }
+        },
+        "resources": [
+            {
+                "type": "extensions",
+                "name": "taniumServer-config-ext",
+                "apiVersion": "[variables('apiVersion')]",
+                "location": "[resourceGroup().location]",
+                "dependsOn": [
+                    "[variables('vmSettings').serverName]"
+                ],
+                "properties": {
+                    "publisher": "Microsoft.PowerSHell",
+                    "type": "DSC",
+                    "typeHandlerVersion": "2.20",
+                    "autoUpgradeMinorVersion": true,
+                    "settings": {
+                      "modulesUrl": "[variables('DSCSettings').modulesUrl]",
+                      "configurationFunction": "[variables('DSCSettings').configurationFunction]"
+                    }
+                }
+            }
+        ]
     }
   ],
   "outputs": {

@@ -13,11 +13,7 @@
       "type": "string",
       "allowedValues": [
         "3k",
-        "10k",
-        "35k",
-        "75k",
-        "150k",
-        "400k"
+        "10k"
       ],
       "defaultValue": "3k",
       "metadata": {
@@ -78,14 +74,12 @@
           "uri": "[variables('templates').deployment.taniumCompute]"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('computerNamePrefix')]" },
           "computerNamePrefix": { "value": "[variables('namePrefix')]" },
           "virtualNetworkName": { "value": "[parameters('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[parameters('virtualNetworkResourceGroupName')]" },
           "subnetName": { "value": "[parameters('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
-          "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[parameters('templateRootUri')]" }
+          "adminPassword": { "value": "[parameters('adminPassword')]" }
         }
       }
     }

@@ -19,12 +19,6 @@
     },
     "adminPassword": {
       "type": "securestring"
-    },
-    "taniumLicenseFileURI": {
-      "type": "string",
-      "metadata": {
-        "description": "URI to a tanium license file."
-      }
     }
   },
   "variables": {
@@ -99,15 +93,13 @@
           "uri": "[variables('templates').deployment.taniumCompute]"
         },
         "parameters": {
-          "namePrefix": { "value": "[variables('computerNamePrefix')]" },
           "computerNamePrefix": { "value": "[variables('namePrefix')]" },
           "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[variables('templateRootUri')]" },
-          "taniumLicenseFileURI": { "value": "[parameters('taniumLicenseFileURI')]" }
+          "templateRootUri": { "value": "[variables('templateRootUri')]" }
         }
       }
     },
