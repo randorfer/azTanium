@@ -89,14 +89,16 @@
         }
     },
     {
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('VMSettings').availabilitySetName]",
       "location": "[resourceGroup().location]",
       "properties": {
         "platformFaultDomainCount": 3,
-        "platformUpdateDomainCount": 3,
-        "managed": "true"
+        "platformUpdateDomainCount": 5
+      },
+      "sku": {
+          "name": "Aligned"
       }
     },
     {
