@@ -37,7 +37,7 @@
     }
   },
   "variables": {
-    "apiVersion": "2016-09-01",
+    "apiVersion": "2017-03-30",
     "vnetID": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "DSCSettings": {
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
@@ -50,8 +50,8 @@
         "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
       },
       "serverName": "[concat(parameters('computerNamePrefix'), '-1')]",
-      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
-      "size": "Standard_DS12_v2"
+        "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
+        "size": "Standard_DS12_v2"
     }
   },
   "resources": [
