@@ -1,0 +1,198 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "computerNamePrefix": {
+      "type": "string"
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network Name"
+      }
+    },
+    "virtualNetworkResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Networking Resource Group"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet for VM"
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Administrator Name"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "VM Admin Password"
+      }
+    }
+  },
+  "variables": {
+    "vnetID": "[resourceId(parameters('virtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+    "DSCSettings": {
+      "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
+      "configurationFunction": "taniumServer.ps1\\taniumServer"
+    },
+    "Tanium-Server-VMSettings": {
+      "Networking": {
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+        "publicIPAddressName": "[concat(parameters('computerNamePrefix'), '-pip')]",
+        "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
+      },
+      "ServerName1": "[concat(parameters('computerNamePrefix'), '-TS-1')]",
+      "ServerName2": "[concat(parameters('computerNamePrefix'), '-TS-2')]",
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-TS-as')]",
+      "size": "Standard_DS2_v2"
+    },
+    "Module-Server-VMSettings": {
+      "Networking": {
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+        "publicIPAddressName": "[concat(parameters('computerNamePrefix'), '-pip')]",
+        "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
+      },
+      "ServerName": "[concat(parameters('computerNamePrefix'), '-MS')]",
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-MS-as')]",
+      "size": "Standard_DS2_v2"  
+    },
+    "Zone-Hub-Server-VMSettings": {
+      "Networking": {
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+        "publicIPAddressName": "[concat(parameters('computerNamePrefix'), '-pip')]",
+        "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
+      },
+      "ServerName": "[concat(parameters('computerNamePrefix'), '-ZH')]",
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-ZH-as')]",
+      "size": "Standard_DS2_v2"  
+    }  
+  },
+  "resources": [
+    {
+        "apiVersion": "2017-03-01",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('vmSettings').Networking.publicIPAddressName]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "publicIPAllocationMethod": "Dynamic"
+        }
+    },
+    {
+        "apiVersion": "2017-03-01",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('vmSettings').Networking.nicName]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[variables('vmSettings').Networking.publicIPAddressName]"
+        ],
+        "properties": {
+            "ipConfigurations": [
+                {
+                    "name": "ipconfig1",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('vmSettings').Networking.publicIPAddressName)]"
+                        },
+                        "subnet": {
+                            "id": "[variables('vmSettings').Networking.subnetRef]"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+      "apiVersion": "2017-03-30",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[variables('VMSettings').availabilitySetName]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "platformFaultDomainCount": 3,
+        "platformUpdateDomainCount": 5
+      },
+      "sku": {
+          "name": "Aligned"
+      }
+    },
+    {
+        "apiVersion": "2017-03-30",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('VMSettings').serverName]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[variables('vmSettings').Networking.nicName]",
+            "[variables('vmSettings').availabilitySetName]"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "[variables('VMSettings').size]" 
+            },
+            "osProfile": {
+                "computerName": "[variables('vmSettings').serverName]",
+                "adminUsername": "[parameters('adminUsername')]",
+                "adminPassword": "[parameters('adminPassword')]"
+            },
+            "storageProfile": {
+                "imageReference": {
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2016-Datacenter",
+                    "version": "latest"
+                },
+                "osDisk": {
+                    "createOption": "FromImage"
+                },
+                "dataDisks": [
+                  {
+                    "diskSizeGB": 128,
+                    "lun": 0,
+                    "caching": "None",
+                    "createOption": "Empty"
+                  }
+                ]
+            },
+            "networkProfile": {
+                "networkInterfaces": [
+                    {
+                        "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmSettings').Networking.nicName)]"
+                    }
+                ]
+            },
+            "availabilitySet": {
+              "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('VMSettings').availabilitySetName)]"
+            }
+        },
+        "resources": [
+            {
+                "type": "extensions",
+                "name": "taniumServer-config-ext",
+                "apiVersion": "2017-03-30",
+                "location": "[resourceGroup().location]",
+                "dependsOn": [
+                    "[variables('vmSettings').serverName]"
+                ],
+                "properties": {
+                    "publisher": "Microsoft.PowerShell",
+                    "type": "DSC",
+                    "typeHandlerVersion": "2.20",
+                    "autoUpgradeMinorVersion": true,
+                    "settings": {
+                      "modulesUrl": "[variables('DSCSettings').modulesUrl]",
+                      "configurationFunction": "[variables('DSCSettings').configurationFunction]"
+                    }
+                }
+            }
+        ]
+    }
+  ],
+  "outputs": {
+  }
+}

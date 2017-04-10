@@ -27,7 +27,7 @@ Configuration taniumServer
                                        "/InstallSharedWOWDir=`"$($InstallDir) (x86)\Microsoft SQL Server\`" " +
                                        "/InstallSQLDataDir=`"$($InstallDir)\Microsoft SQL Server\\`" "
 
-    $LocalAdminUsername = (Get-WmiObject -Class Win32_UserAccount -Filter  "LocalAccount='True'").Name | ? {$_-ne 'Guest'}
+    $LocalAdminUsername = (Get-WmiObject -Class Win32_UserAccount -Filter  "LocalAccount='True'").Name | ? {$_ -notin @('Guest','DefaultAccount')}
     $TaniumVersion = '7.0.314.6319'
     $TaniumSetupExeURI = "https://content.tanium.com/files/install/$TaniumVersion/SetupServer.exe"
     $TaniumServerExe = 'SetupServer.exe'
