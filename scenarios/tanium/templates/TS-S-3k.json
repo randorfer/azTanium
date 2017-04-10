@@ -64,7 +64,7 @@
         }
     },
     {
-        "apiVersion": "2017-03-30",
+        "apiVersion": "2017-04-01",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[variables('vmSettings').Networking.nicName]",
         "location": "[resourceGroup().location]",
