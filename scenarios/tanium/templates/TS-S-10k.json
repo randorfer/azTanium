@@ -100,9 +100,9 @@
       }
     },
     {
-        "apiVersion": "2016-04-30-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Compute/virtualMachines",
-        "name": "[parameters('computerNamePrefix')]",
+        "name": "[variables('VMSettings').serverName]",
         "location": "[resourceGroup().location]",
         "dependsOn": [
             "[variables('vmSettings').Networking.nicName]",
@@ -149,7 +149,7 @@
                     "[variables('vmSettings').serverName]"
                 ],
                 "properties": {
-                    "publisher": "Microsoft.PowerSHell",
+                    "publisher": "Microsoft.PowerShell",
                     "type": "DSC",
                     "typeHandlerVersion": "2.20",
                     "autoUpgradeMinorVersion": true,
