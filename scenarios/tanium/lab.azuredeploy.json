@@ -98,8 +98,7 @@
           "virtualNetworkResourceGroupName": { "value": "[resourceGroup().name]" },
           "subnetName": { "value": "[variables('TSServerSubnetName')]" },
           "adminUserName": { "value": "[parameters('adminUserName')]" },
-          "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "templateRootUri": { "value": "[variables('templateRootUri')]" }
+          "adminPassword": { "value": "[parameters('adminPassword')]" }
         }
       }
     },
