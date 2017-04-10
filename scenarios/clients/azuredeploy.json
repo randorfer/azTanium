@@ -39,24 +39,28 @@
       }
     },
     "templateRootUri": {
-        "type": "string",
-        "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/"
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/randorfer/azTanium/master/"
     },
     "win7ClientCount": {
-        "type": "int",
-        "defaultValue": 3 
+      "type": "int",
+      "defaultValue": 3 
     },
     "win10ClientCount": {
-        "type": "int",
-        "defaultValue": 3 
+      "type": "int",
+      "defaultValue": 3 
     },
     "ubuntu1604ClientCount": {
-        "type": "int",
-        "defaultValue": 3 
+      "type": "int",
+      "defaultValue": 1 
     },
      "centos73ClientCount": {
-        "type": "int",
-        "defaultValue": 3 
+      "type": "int",
+      "defaultValue": 1 
+    },
+    "windowsServer2016ClientCount": {
+      "type": "int",
+      "defaultValue": 1
     }
   },
   "variables": {
@@ -359,6 +363,82 @@
             "value": {
               "storageAccountsCount": 1,
               "vmCount": "[parameters('centOS73ClientCount')]", 
+              "vmStartIndex": 1
+            }
+          },
+          "storageAccountSKU": {
+            "value": "Standard_LRS"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "WindowsServer-2016-Clients",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vmTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualMachinesSettings": {
+            "value": {
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'-ws17')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ws17')]",
+              "size": "[variables('size')]",
+              "osType": "Windows",
+              "adminUsername": "[parameters('adminUserName')]",
+              "adminPassword": "[parameters('adminPassword')]",
+              "osAuthenticationType": "password",
+              "nics": [
+                {
+                  "isPublic": "true",
+                  "subnetName": "[parameters('subnetName')]",
+                  "publicIPAllocationMethod": "Dynamic",
+                  "privateIPAllocationMethod": "Dynamic",
+                  "enableIPForwarding": false,
+                  "dnsServers": [ ],
+                  "isPrimary": "true",
+                  "domainNameLabelPrefix": ""
+                }
+              ],
+              "imageReference": {
+                  "publisher": "MicrosoftWindowsServer",
+                  "offer": "WindowsServer",
+                  "sku": "2016-Datacenter",
+                  "version": "latest"
+              },
+              "dataDisks": { 
+                "count": 0,
+                "properties": {
+                  "diskSizeGB": 128,
+                  "caching": "ReadWrite",
+                  "createOption": "Empty"
+                }
+              },
+              "osDisk": {
+                "caching": "ReadWrite"
+              },
+              "extensions": [
+              ],
+              "availabilitySet": {
+                "useExistingAvailabilitySet": "No",
+                "name": "ws16"
+              }
+            }
+          },
+          "virtualNetworkSettings": {
+            "value": {
+              "name": "[parameters('virtualNetworkName')]",
+              "resourceGroup": "[parameters('virtualNetworkResourceGroupName')]"
+            }
+          },
+          "buildingBlockSettings": {
+            "value": {
+              "storageAccountsCount": 1,
+              "vmCount": "[parameters('WindowsServer2016ClientCount')]", 
               "vmStartIndex": 1
             }
           },
