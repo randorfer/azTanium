@@ -64,7 +64,7 @@
     }
   },
   "variables": {
-    "size": "Standard_D2_v2",
+    "size": "Standard_DS2_v2",
     "vmTemplate": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]"
   },
   "resources": [
