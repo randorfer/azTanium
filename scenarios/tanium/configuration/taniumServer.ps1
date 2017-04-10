@@ -35,6 +35,10 @@ Configuration taniumServer
     $TaniumServerCommandLineArgs = 
         "/S /ServerAddress=0.0.0.0 /ServerHostName=$($env:ComputerName) /AdminUser=$($LocalAdminUsername)"
 
+    $TaniumClientDeploymentToolSetupEXEUri = 'https://downloads.tanium.com/files/tools/TaniumClientDeploymentToolSetup_8.0.0.7.exe'
+    $TaniumClientDeploymentToolSetupExe = 'TaniumClientDeploymentToolSetup_8.0.0.7.exe'
+    $TaniumClientDeploymentToolSetupCommandLineArgs = '/S'
+
     $RetryCount = 20
     $RetryIntervalSec = 30
     
@@ -188,6 +192,26 @@ Configuration taniumServer
             Protocol              = "TCP"
             Description           = "Firewall Rule for TaniumModuleServer.exe"
             Program               = "$InstallDir\Tanium\Tanium Module Server\TaniumModuleServer.exe"
+        }
+        xRemoteFile DownloadTaniumClientDepoloymentToolSetup
+        {
+            Uri = $TaniumClientDeploymentToolSetupEXEUri 
+            DestinationPath = "$($SourceDir)\$($TaniumClientDeploymentToolSetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallTaniumClientDeploymentTool
+        {
+            Name = "Tanium Client Deployment Tool"
+            Path = "$($SourceDir)\$($TaniumClientDeploymentToolSetupExe)" 
+            Arguments = $TaniumClientDeploymentToolSetupCommandLineArgs 
+            Ensure = 'Present'
+            DependsOn = @(
+                '[xPackage]InstallTaniumServer'
+            )
+            ProductId = ''
+            InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client Deployment Tool'
+            InstalledCheckRegValueName = 'DisplayVersion'
+            InstalledCheckRegValueData = '8.0.0.7' 
         }
     }
 }
