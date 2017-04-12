@@ -42,6 +42,10 @@
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
     },
+    "ScriptSettings": {
+      "FileUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumInstallationPath.ps1",
+      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File Set-TaniumInstallationPath.ps1"
+    },
     "VMSettings": {
       "Networking": {
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
@@ -188,11 +192,11 @@
                     "autoUpgradeMinorVersion": true,
                     "settings": {
                         "fileUris": [
-                            "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumInstallationPath.ps1"
+                            "[variables('ScriptSettings').FileUri]"
                         ]
                     },
                     "protectedSettings": {
-                        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File cSet-TaniumInstallationPath.ps1"
+                        "commandToExecute": "[variables('ScriptSettings').commandToExecute]"
                     }
                 }
             }
