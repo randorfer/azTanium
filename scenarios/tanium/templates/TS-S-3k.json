@@ -168,6 +168,33 @@
                       "configurationFunction": "[variables('DSCSettings').configurationFunction]"
                     }
                 }
+            },
+            {
+                "apiVersion": "2015-06-15",
+                "type": "extensions",
+                "name": "config-app",
+                "location": "[resourceGroup().location]",
+                "dependsOn": [
+                    "[variables('vmSettings').serverName]",
+                    "taniumServer-config-ext"
+                ],
+                "tags": {
+                    "displayName": "config-app"
+                },
+                "properties": {
+                    "publisher": "Microsoft.Compute",
+                    "type": "CustomScriptExtension",
+                    "typeHandlerVersion": "1.8",
+                    "autoUpgradeMinorVersion": true,
+                    "settings": {
+                        "fileUris": [
+                            "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumInstallationPath.ps1"
+                        ]
+                    },
+                    "protectedSettings": {
+                        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File cSet-TaniumInstallationPath.ps1"
+                    }
+                }
             }
         ]
     }
