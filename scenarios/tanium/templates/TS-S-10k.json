@@ -135,7 +135,7 @@
                 },
                 "dataDisks": [
                   {
-                    "diskSizeGB": 128,
+                    "diskSizeGB": 256,
                     "lun": 0,
                     "caching": "None",
                     "createOption": "Empty"
