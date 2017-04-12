@@ -36,5 +36,7 @@ Get-WmiObject -Class Win32_Service -filter "Name='Tanium Module Server'" | `
         "$($DestinationDirectory)\Tanium\Tanium Module Server\TaniumModuleServer.exe"
     )
 
+Remove-Item -Path $SourceDirectory -Recurse -Force
+
 Start-Service -Name 'Tanium Server'
 Start-Service -Name 'Tanium Module Server'
