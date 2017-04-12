@@ -81,8 +81,8 @@
         "parameters": {
           "virtualMachinesSettings": {
             "value": {
-              "namePrefix": "[concat(parameters('computerNamePrefix'),'-win7-')]",
-              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-win7-')]",
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'win7')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-win7')]",
               "size": "[variables('size')]",
               "osType": "windows",
               "adminUsername": "[parameters('adminUserName')]",
@@ -157,8 +157,8 @@
         "parameters": {
           "virtualMachinesSettings": {
             "value": {
-              "namePrefix": "[concat(parameters('computerNamePrefix'),'-win10-')]",
-              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-win10-')]",
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'win10')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-win10')]",
               "size": "[variables('size')]",
               "osType": "windows",
               "adminUsername": "[parameters('adminUserName')]",
@@ -233,8 +233,8 @@
         "parameters": {
           "virtualMachinesSettings": {
             "value": {
-              "namePrefix": "[concat(parameters('computerNamePrefix'),'ubuntu1604-')]",
-              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ubuntu1604-')]",
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'ubuntu1604')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ubuntu1604')]",
               "size": "[variables('size')]",
               "osType": "linux",
               "adminUsername": "[parameters('adminUserName')]",
@@ -309,8 +309,8 @@
         "parameters": {
           "virtualMachinesSettings": {
             "value": {
-              "namePrefix": "[concat(parameters('computerNamePrefix'),'centos73-')]",
-              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-centos73-')]",
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'centos73')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-centos73')]",
               "size": "[variables('size')]",
               "osType": "linux",
               "adminUsername": "[parameters('adminUserName')]",
@@ -385,8 +385,8 @@
         "parameters": {
           "virtualMachinesSettings": {
             "value": {
-              "namePrefix": "[concat(parameters('computerNamePrefix'),'-ws16-')]",
-              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ws16-')]",
+              "namePrefix": "[concat(parameters('computerNamePrefix'),'-ws17')]",
+              "computerNamePrefix": "[concat(parameters('computerNamePrefix'),'-ws17')]",
               "size": "[variables('size')]",
               "osType": "Windows",
               "adminUsername": "[parameters('adminUserName')]",
