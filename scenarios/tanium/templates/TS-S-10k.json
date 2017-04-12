@@ -42,6 +42,10 @@
       "modulesUrl": "https://github.com/randorfer/azTanium/blob/master/scenarios/tanium/configuration/taniumServer.ps1.zip?raw=true",
       "configurationFunction": "taniumServer.ps1\\taniumServer"
     },
+    "ScriptSettings": {
+      "FileUri": "https://raw.githubusercontent.com/randorfer/azTanium/master/scenarios/tanium/scripts/Set-TaniumInstallationPath.ps1",
+      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File Set-TaniumInstallationPath.ps1"
+    },
     "VMSettings": {
       "Networking": {
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
@@ -49,8 +53,8 @@
         "nicName": "[concat(parameters('computerNamePrefix'), '-nic')]"
       },
       "serverName": "[concat(parameters('computerNamePrefix'), '-1')]",
-        "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
-        "size": "Standard_DS12_v2"
+      "availabilitySetName": "[concat(parameters('computerNamePrefix'), '-as')]",
+      "size": "Standard_DS12_v2"
     }
   },
   "resources": [
@@ -166,6 +170,33 @@
                     "settings": {
                       "modulesUrl": "[variables('DSCSettings').modulesUrl]",
                       "configurationFunction": "[variables('DSCSettings').configurationFunction]"
+                    }
+                }
+            },
+            {
+                "apiVersion": "2015-06-15",
+                "type": "extensions",
+                "name": "config-app",
+                "location": "[resourceGroup().location]",
+                "dependsOn": [
+                    "[variables('vmSettings').serverName]",
+                    "taniumServer-config-ext"
+                ],
+                "tags": {
+                    "displayName": "config-app"
+                },
+                "properties": {
+                    "publisher": "Microsoft.Compute",
+                    "type": "CustomScriptExtension",
+                    "typeHandlerVersion": "1.8",
+                    "autoUpgradeMinorVersion": true,
+                    "settings": {
+                        "fileUris": [
+                            "[variables('ScriptSettings').FileUri]"
+                        ]
+                    },
+                    "protectedSettings": {
+                        "commandToExecute": "[variables('ScriptSettings').commandToExecute]"
                     }
                 }
             }
